@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Temperature Hot</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background: url(images/bg-image.jpg) no-repeat;
+            background-size: cover;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <form class="col-md-6 m-auto py-5">
+            <div class="input-group mb-3">
+                <input id="input" type="text" class="form-control" placeholder="Enter a location for Weather ...">
+                <div class="input-group-append">
+                    <button id="btn" type="button" class="btn btn-danger">Search</button>
+                </div>
+            </div>
+        </form>
+        <div class="weather-status text-white text-center">
+            <img src="https://openweathermap.org/img/wn/02d@2x.png" alt="">
+            <h1 id="location">Dhaka</h1>
+            <h3><span id="temperature">38.06</span>&deg;C</h3>
+            <h1 class="lead" id="lead">Normal</h1>
+        </div>
+    </div>
+
+    <script>
+
+        //button click and called function
+        document.getElementById('btn')
+        .addEventListener('click',function(){
+           const info= document.getElementById('input').value;
+           getWeather(info);
+        })
+
+        //api load and display
+        function getWeather(info){
+            fetch('https://api.openweathermap.org/data/2.5/weather?q='+info+'&appid=0c129c39e6af5a541dafcf7dc066356c')
+            .then(res=>res.json())
+            .then(data=>{
+                const location=document.getElementById('location');
+                const temperature=document.getElementById('temperature');
+                const lead=document.getElementById('lead');
+                console.log(data);
+
+                const myLocation=data.name;
+                location.innerText=myLocation;
+
+                const tempGet=data.main.temp;
+                const temp=Math.round(tempGet-273.15);
+                temperature.innerText=temp;
+
+                const weatherGet=data.weather[0];
+                lead.innerText=weatherGet.main;
+
+
+            })
+        }
+        
+
+        
+    </script>
+
+</body>
+
+</html>
